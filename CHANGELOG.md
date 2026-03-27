@@ -55,23 +55,29 @@ Dieses Changelog ist die zentrale Quelle fuer Modrinth + CurseForge.
 
 ## 1.0.2
 ### Features
-- (pending)
+- Add diagnostics command `/mapswitch debug`.
+- Add map overview command `/mapswitch list`.
 ### Improvements
-- (pending)
+- Improve operator feedback for map switch errors and map availability hints.
+- Expand wiki troubleshooting for common setup/runtime issues.
 ### Fixes
-- (pending)
+- Improve player-data loading fallback path with clearer root-cause reporting.
+- Harden file/path handling for per-map playerdata/stat/advancement loading.
 ### Internal
-- (pending)
+- Align roadmap + issue planning for `1.0.2` release scope.
 
 ## 1.0.3
 ### Features
-- (pending)
+- Add configurable teleport target per map via config.
+- Add automatic restore to last active map on player join.
+- Add map aliases (example: `hc -> hardcore`).
 ### Improvements
-- (pending)
+- Improve map-switch success/error UX messages for players.
+- Improve admin-facing diagnostics output for map resolution.
 ### Fixes
-- (pending)
+- Stabilize join/map-hint sync when player reconnects during switch flow.
 ### Internal
-- (pending)
+- Prepare migration path for next minor (`1.1.0`) feature bundle.
 
 ## 1.0.4
 ### Features
@@ -135,13 +141,18 @@ Dieses Changelog ist die zentrale Quelle fuer Modrinth + CurseForge.
 
 ## 1.1.0
 ### Features
-- (pending)
+- Add configurable command access modes per map/global (`public` / `restricted` / `whitelist`).
+- Add per-map player limits (quota).
+- Add per-map gamerule profile application.
+- Add migration command for old map folder layouts (with dry-run).
+- Add admin analytics command `/mapswitch stats`.
 ### Improvements
-- (pending)
+- Improve governance controls for public/community servers with multiple worlds.
+- Improve operational visibility for map activity and load distribution.
 ### Fixes
-- (pending)
+- Fix edge-cases around permission transitions during runtime config changes.
 ### Internal
-- (pending)
+- Promote roadmap from patch-level fixes to a minor feature release.
 
 ---
 

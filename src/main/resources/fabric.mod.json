@@ -7,8 +7,13 @@
   "authors": [
     "MapSwitch"
   ],
-  "contact": {},
+  "contact": {
+    "homepage": "https://modrinth.com/mod/mapswitch",
+    "sources": "https://github.com/your-org/mapswitch",
+    "issues": "https://github.com/your-org/mapswitch/issues"
+  },
   "license": "MIT",
+  "icon": "assets/mapswitch/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [

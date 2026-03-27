@@ -1,0 +1,39 @@
+# Gradle
+.gradle/
+build/
+out/
+
+# IDE / Editor
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs / Runtime
+logs/
+*.log
+hs_err_pid*
+replay_pid*
+
+# Fabric run artifacts / local server data
+run/
+saves/
+world/
+crash-reports/
+config/
+maps/
+
+# Optional local env files
+.env
+.env.*
+
+# Keep wrapper tracked
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+!gradlew
+!gradlew.bat

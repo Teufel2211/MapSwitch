@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "mapswitch",
+  "version": "${version}",
+  "name": "MapSwitch",
+  "description": "Parallel multi-world switching with full per-map player data separation.",
+  "authors": [
+    "MapSwitch"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.mapswitch.MapSwitchMod"
+    ],
+    "server": [
+      "com.mapswitch.MapSwitchMod"
+    ]
+  },
+  "mixins": [
+    "mapswitch.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.17.0",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}

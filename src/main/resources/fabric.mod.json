@@ -9,8 +9,8 @@
   ],
   "contact": {
     "homepage": "https://modrinth.com/mod/mapswitch",
-    "sources": "https://github.com/your-org/mapswitch",
-    "issues": "https://github.com/your-org/mapswitch/issues"
+    "sources": "https://github.com/Teufel2211/MapSwitch",
+    "issues": "https://github.com/Teufel2211/MapSwitch/issues"
   },
   "license": "MIT",
   "icon": "assets/mapswitch/icon.png",

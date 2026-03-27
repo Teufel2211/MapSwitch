@@ -27,7 +27,7 @@ Create a project with:
 
 Use:
 - Description source: `docs/modrinth-description.md`
-- Changelog source: `CHANGELOG.md`
+- Changelog source: `CHANGELOG.md` (optional helper: `docs/changelog-modrinth.md`)
 - Primary file: `build/libs/mapswitch-1.0.0.jar`
 
 Mark dependencies:
@@ -41,7 +41,7 @@ Create a Fabric project with:
 
 Use:
 - Description source: `docs/curseforge-description.md`
-- Changelog source: `CHANGELOG.md`
+- Changelog source: `CHANGELOG.md` (optional helper: `docs/changelog-curseforge.md`)
 - Main file: `build/libs/mapswitch-1.0.0.jar`
 
 Mark dependency:
@@ -53,3 +53,15 @@ Mark dependency:
 - `LICENSE` exists.
 - `CHANGELOG.md` includes current release notes.
 - Jar starts successfully on a clean Fabric test server.
+
+## GitHub Project + Wiki
+- Project Board setup template:
+  - `docs/github-project-template.md`
+- Wiki page sources:
+  - `docs/wiki/Home.md`
+  - `docs/wiki/Installation.md`
+  - `docs/wiki/Commands.md`
+  - `docs/wiki/Configuration.md`
+  - `docs/wiki/Map-Structure.md`
+  - `docs/wiki/Troubleshooting.md`
+  - `docs/wiki/Developer-Notes.md`

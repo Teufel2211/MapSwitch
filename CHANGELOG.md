@@ -64,7 +64,7 @@ Dieses Changelog ist die zentrale Quelle fuer Modrinth + CurseForge.
 - Improve player-data loading fallback path with clearer root-cause reporting.
 - Harden file/path handling for per-map playerdata/stat/advancement loading.
 ### Internal
-- Align roadmap + issue planning for `1.0.2` release scope.
+- Align roadmap + issue planning for 1.0.2 release scope.
 
 ## 1.0.3
 ### Features

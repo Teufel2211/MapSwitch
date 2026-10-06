@@ -3,6 +3,7 @@ param(
     [string]$ChangelogPath = "CHANGELOG.md",
     [string[]]$Versions = @("1.0.2", "1.0.3", "1.1.0"),
     [string[]]$RequestedLabels = @("roadmap", "release"),
+    [bool]$CloseStaleRoadmapIssues = $true,
     [switch]$DryRun
 )
 
@@ -10,9 +11,24 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
 function Require-Token {
-    if ([string]::IsNullOrWhiteSpace($env:GITHUB_TOKEN)) {
-        throw "GITHUB_TOKEN is not set. Create a classic PAT or fine-grained token with Issues: Read and write, then set: `$env:GITHUB_TOKEN='...'"
+    if (![string]::IsNullOrWhiteSpace($env:GITHUB_TOKEN)) {
+        return
     }
+
+    $gh = Get-Command gh -ErrorAction SilentlyContinue
+    if ($null -ne $gh) {
+        try {
+            $ghToken = (& gh auth token 2>$null).Trim()
+            if (![string]::IsNullOrWhiteSpace($ghToken)) {
+                $env:GITHUB_TOKEN = $ghToken
+                return
+            }
+        } catch {
+            # Fall through to explicit error below.
+        }
+    }
+
+    throw "GITHUB_TOKEN is not set. Set `$env:GITHUB_TOKEN='...' or login via `gh auth login`."
 }
 
 function Invoke-GitHubJson {
@@ -66,6 +82,36 @@ $Section
 "@
 }
 
+function Get-MilestoneVersionFromTitle {
+    param([string]$Title)
+    $m = [regex]::Match($Title, "^Milestone (\d+\.\d+\.\d+)$")
+    if ($m.Success) {
+        return $m.Groups[1].Value
+    }
+    return $null
+}
+
+function Is-SyncedRoadmapIssue {
+    param([object]$Issue)
+    $hasPullRequestProperty = $Issue.PSObject.Properties.Name -contains "pull_request"
+    if ($hasPullRequestProperty -and $null -ne $Issue.pull_request) {
+        return $false
+    }
+    $hasTitleProperty = $Issue.PSObject.Properties.Name -contains "title"
+    if (-not $hasTitleProperty) {
+        return $false
+    }
+    $version = Get-MilestoneVersionFromTitle -Title $Issue.title
+    if ([string]::IsNullOrWhiteSpace($version)) {
+        return $false
+    }
+    $hasBodyProperty = $Issue.PSObject.Properties.Name -contains "body"
+    if (-not $hasBodyProperty -or [string]::IsNullOrWhiteSpace($Issue.body)) {
+        return $false
+    }
+    return ($Issue.body -like "*Diese Issue wird aus `CHANGELOG.md` synchronisiert.*")
+}
+
 Require-Token
 
 if (!(Test-Path -LiteralPath $ChangelogPath)) {
@@ -78,6 +124,10 @@ $base = "https://api.github.com/repos/$Repo"
 $allIssues = Invoke-GitHubJson -Method GET -Url "$base/issues?state=all&per_page=100"
 $allLabels = Invoke-GitHubJson -Method GET -Url "$base/labels?per_page=100"
 $usableLabels = @($RequestedLabels | Where-Object { $allLabels.name -contains $_ })
+$knownVersions = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
+foreach ($v in $sections.Keys) {
+    [void]$knownVersions.Add($v)
+}
 
 foreach ($version in $Versions) {
     if (-not $sections.ContainsKey($version)) {
@@ -109,6 +159,26 @@ foreach ($version in $Versions) {
         } else {
             $created = Invoke-GitHubJson -Method POST -Url "$base/issues" -Body $payload
             Write-Host "Created issue #$($created.number): $title"
+        }
+    }
+}
+
+if ($CloseStaleRoadmapIssues) {
+    foreach ($issue in ($allIssues | Where-Object { Is-SyncedRoadmapIssue -Issue $_ })) {
+        $issueVersion = Get-MilestoneVersionFromTitle -Title $issue.title
+        if ($knownVersions.Contains($issueVersion)) {
+            continue
+        }
+        if ($issue.state -eq "closed") {
+            continue
+        }
+
+        $closePayload = @{ state = "closed" }
+        if ($DryRun) {
+            Write-Host "[DRY-RUN] Would close stale issue #$($issue.number): $($issue.title)"
+        } else {
+            Invoke-GitHubJson -Method PATCH -Url "$base/issues/$($issue.number)" -Body $closePayload | Out-Null
+            Write-Host "Closed stale issue #$($issue.number): $($issue.title)"
         }
     }
 }

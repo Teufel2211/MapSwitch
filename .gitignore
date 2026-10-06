@@ -2,6 +2,7 @@
 .gradle/
 build/
 out/
+bin/
 
 # IDE / Editor
 .idea/
@@ -21,12 +22,12 @@ hs_err_pid*
 replay_pid*
 
 # Fabric run artifacts / local server data
-run/
-saves/
-world/
-crash-reports/
-config/
-maps/
+/run/
+/saves/
+/world/
+/crash-reports/
+/config/
+/maps/
 
 # Optional local env files
 .env
